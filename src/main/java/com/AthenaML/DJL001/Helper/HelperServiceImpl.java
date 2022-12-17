@@ -42,12 +42,14 @@ public class HelperServiceImpl implements HelperService{
             float accuracy = result.getTrainEvaluation("Accuracy");
             model.setProperty("Loss", String.format("%.5f", result.getValidateLoss()));
             model.setProperty("Accuracy", String.format("%.5f", accuracy));
-            new DefaultTrainingConfig(Loss.softmaxCrossEntropyLoss())
-                    .addEvaluator(new Accuracy())
-                    .optDevices(Engine.getInstance().getDevices(Engine.getInstance().getGpuCount()))
-                    .addTrainingListeners(TrainingListener.Defaults.logging(outputDire))
-                    .addTrainingListeners(listener);
+
         });
-        return null;
+
+
+         return new DefaultTrainingConfig(Loss.softmaxCrossEntropyLoss())
+                .addEvaluator(new Accuracy())
+                .optDevices(Engine.getInstance().getDevices(Engine.getInstance().getGpuCount()))
+                .addTrainingListeners(TrainingListener.Defaults.logging(outputDire))
+                .addTrainingListeners(listener);
     }
 }
