@@ -40,9 +40,9 @@ public class TestingServiceImpl implements TestingService{
                     .optSynset(classes)
                     .build();
 
-            try(Predictor<Image, Classifications.Classification> predictor =
+            try(Predictor<Image, Classifications> predictor =
                     model.newPredictor(translator)){
-                return predictor.predict(image);
+                return predictor.predict(image).best();
             } catch (TranslateException e) {
                 throw new RuntimeException(e);
             }

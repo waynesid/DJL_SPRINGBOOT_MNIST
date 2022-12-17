@@ -2,7 +2,10 @@ package com.AthenaML.DJL001.Service;
 
 import ai.djl.Model;
 import ai.djl.basicdataset.cv.classification.Mnist;
+import ai.djl.metric.Metrics;
+import ai.djl.ndarray.types.Shape;
 import ai.djl.nn.Activation;
+import ai.djl.training.EasyTrain;
 import ai.djl.training.Trainer;
 import ai.djl.training.TrainingResult;
 import ai.djl.training.dataset.Dataset;
@@ -12,16 +15,25 @@ import com.AthenaML.DJL001.MultiLayerPerceptron;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 /**
  * @author Wayne Sidney
  * Created on {18/12/2022}
  */
 @Service
 public class TrainingServiceImpl implements TrainingService{
+
+    private static final int BATCH_SIZE = 32;
+    private static final int LIMIT = 40;
+    private static final int EPOCH = 25;
     @Autowired
     private HelperService helperService;
     @Override
-    public TrainingResult trainMnistDataSet() {
+    public TrainingResult trainMnistDataSet() throws IOException {
         //add a MODEL_NAME in the newInstance() method as parameter
         try(Model model = Model.newInstance() {
             model.setBlock(new MultiLayerPerceptron
