@@ -1,9 +1,11 @@
 package com.AthenaML.DJL001.Controller;
 
 import ai.djl.modality.Classifications;
+import com.AthenaML.DJL001.Helper.ResponseMessage;
 import com.AthenaML.DJL001.Service.TestingService;
 import com.AthenaML.DJL001.Service.TrainingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,20 +27,21 @@ public class MLPController {
     public ResponseEntity<ResponseMessage> trainMnist(){
         try {
             trainingService.trainMnistDataSet();
-            return ResponseEntity.ok(ResponseMessage.builder().message("Training Data Done").build());
+           String message = "***training dataset***";
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
         }catch (Exception e){
-            return ResponseEntity.ok(ResponseMessage.builder().message(e.getMessage()).build());
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(e.getMessage()));
         }
     }
 
     @GetMapping("/testing")
     public ResponseEntity<ResponseMessage> predict(){
         try {
-            Classifications classifications = testingService.testDataset();
-            classifications.setTopK(1);
-            return ResponseEntity.ok(ResponseMessage.builder().message(classifications.toString()).build());
+            Classifications.Classification classifications = testingService.testDataset();
+            classifications.getProbability();
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(classifications.toString()));
         }catch (Exception e){
-            return ResponseEntity.ok(ResponseMessage.builder().message(e.getMessage()).build());
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(e.getMessage()));
         }
     }
 }

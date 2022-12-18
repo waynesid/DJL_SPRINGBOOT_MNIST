@@ -42,7 +42,7 @@ public class TrainingServiceImpl implements TrainingService{
         try(Model model = Model.newInstance(MODEL_NAME)){
 
             model.setBlock(new MultiLayerPerceptron
-                    (Mnist.IMAGE_HEIGHT * Mnist.IMAGE_WIDTH, Mnist.NUM_CLASSES, new int[]{128, 64}, Activation.));
+                    (Mnist.IMAGE_HEIGHT * Mnist.IMAGE_WIDTH, Mnist.NUM_CLASSES, new int[]{128, 64}, Activation::sigmoid));
             RandomAccessDataset trainingSet = helperService.getDataSet(Dataset.Usage.TRAIN, BATCH_SIZE, LIMIT);
             RandomAccessDataset validateSet = this.helperService.getDataSet(Dataset.Usage.TEST, BATCH_SIZE, LIMIT);
 
