@@ -15,6 +15,7 @@ import ai.djl.translate.TranslateException;
 import com.AthenaML.DJL001.Helper.HelperService;
 import com.AthenaML.DJL001.MultiLayerPerceptron;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -29,12 +30,11 @@ import java.nio.file.Paths;
 @Service
 public class TrainingServiceImpl implements TrainingService{
 
-    private static final String MODEL_NAME = "model_mnistClassification";
-
-    private static final String MODEL_DIRE = "~/AthenaMLJava/DJL-001/src/main/java/com/AthenaML/DJL001/Djl001Application.java";
+    private static final String MODEL_NAME = System.getenv("Athena.MODEL_NAME");
+    private static final String MODEL_DIRE = System.getenv("Athena.MODEL_DIRE");
     private static final int BATCH_SIZE = 32;
     private static final int LIMIT = 40;
-    private static final int EPOCH = 25;
+    private static final int EPOCH = 50;
     @Autowired
     private HelperService helperService;
     @Override

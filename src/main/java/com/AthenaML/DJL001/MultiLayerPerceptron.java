@@ -12,7 +12,7 @@ import java.util.function.Function;
  * Created on {18/12/2022}
  */
 public class MultiLayerPerceptron extends SequentialBlock {
-    public void MultilayerPerceptron(int input, int output, int[] hidden, Function<NDList, NDList> activation){
+    public void MultilayerPerceptron(int input, int output, int[] hidden, Function<NDList,NDList> activation){
         add(Blocks.batchFlattenBlock(input));
         for(int hiddenSize : hidden){
             add(Linear.builder().setUnits(hiddenSize).build());
